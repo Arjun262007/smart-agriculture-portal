@@ -1,0 +1,77 @@
+<!-- Path: smart-agriculture-portal/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Agriculture Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f9; }
+        h1, h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-bottom: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #27ae60; color: white; }
+        .alert { color: red; font-weight: bold; }
+        .card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>Smart Agriculture & Irrigation Resource Optimization Portal</h1>
+
+    <!-- Initial Commit Features: Dashboard with 5 Fields, Alerts, Schedules -->
+    <div class="card">
+        <h2>Field Monitoring Dashboard</h2>
+        <form method="GET" action="/">
+            <label>Filter by Crop: </label>
+            <select name="crop" onchange="this.form.submit()">
+                <option value="All">All Crops</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Corn">Corn</option>
+                <option value="Rice">Rice</option>
+                <option value="Soybean">Soybean</option>
+                <option value="Cotton">Cotton</option>
+            </select>
+        </form>
+        <table>
+            <tr>
+                <th>Field ID</th>
+                <th>Crop Type</th>
+                <th>Soil Moisture (%)</th>
+                <th>Daily Water Consumption (L)</th>
+                <th>Temperature (°C)</th>
+                <th>Irrigation Status</th>
+                <th>Crop Health Status</th>
+            </tr>
+            {% for field in fields %}
+            <tr>
+                <td>{{ field.field_id }}</td>
+                <td>{{ field.crop }}</td>
+                <td>
+                    {{ field.moisture }}% 
+                    {% if field.moisture < 30 %}<span class="alert">[ALERT: < 30%]</span>{% endif %}
+                </td>
+                <td>{{ field.water_consumption }} L</td>
+                <td>{{ field.temp }} °C</td>
+                <td>{{ field.status }}</td>
+                <td>{{ field.health }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Enhancement Commit Features: Water Analytics & Optimization -->
+    <div class="card">
+        <h2>Water Analytics & Optimization</h2>
+        <p><strong>Total Water Consumption Across All Fields:</strong> {{ total_water }} Liters</p>
+        <p><strong>Field with Lowest Soil Moisture:</strong> Field {{ lowest_field.field_id }} ({{ lowest_field.crop }} - {{ lowest_field.moisture }}%)</p>
+        <p><strong>Water-Saving Target:</strong> Reduce consumption by 15% this quarter.</p>
+        <p><strong>Irrigation Completion Status:</strong> 60% Completed for today.</p>
+        
+        <h3>Prioritized Irrigation Recommendations</h3>
+        <ul>
+            {% for rec in recommendations %}
+            <li><strong>{{ rec.field_id }} ({{ rec.crop }})</strong> requires immediate irrigation (Current moisture: {{ rec.moisture }}%). Next schedule: Immediate.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
