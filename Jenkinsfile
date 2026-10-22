@@ -13,12 +13,12 @@ pipeline {
             parallel {
                 stage('Code Linting') {
                     steps {
-                        sh 'python3 -m py_compile app.py'
+                        bat 'python -m py_compile app.py'
                     }
                 }
                 stage('Dependencies Check') {
                     steps {
-                        sh 'python3 --version'
+                        bat 'python --version'
                     }
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
             }
             steps {
                 echo "Executing tests..."
-                sh 'echo "Tests Passed" > test-report.txt'
+                bat 'echo Tests Passed > test-report.txt'
             }
         }
         stage('Archive Artifacts') {
